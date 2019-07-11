@@ -1,14 +1,20 @@
 <template>
-  <div id="app">
-    <Detect v-on:dataused="dataused" />
-    <Display :images="images"></Display>
-  </div>
+  <v-app id="app">
+    <v-content>
+      <v-container fluid>
+        <Detect v-on:dataused="dataused" />
+        <Display :predictions="predictions"></Display>
+      </v-container>
+    </v-content>
+    <v-footer app></v-footer>
+  </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Detect from "./components/Detect.vue";
 import Display from "./components/Display.vue";
+import { IPredictionContent } from "./models/prediction";
 
 @Component({
   components: {
@@ -17,13 +23,19 @@ import Display from "./components/Display.vue";
   }
 })
 export default class App extends Vue {
-  private images: string[] = [];
-  mounted() {
-    this.images = [];
+  /**
+   *
+   */
+  constructor() {
+    super();
   }
-  dataused(imageData: string) {
+  private predictions: IPredictionContent[] = [];
+  public mounted() {
+    this.predictions = [];
+  }
+  public dataused(imageData: IPredictionContent) {
     console.info("Main", imageData);
-    this.images.push(imageData);
+    this.predictions.unshift(imageData);
   }
 }
 </script>
