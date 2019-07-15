@@ -1,29 +1,56 @@
 <template>
-  <div>
-    <video v-if="!isMobile()" @click="capture" class="mirrored" ref="video"></video>
-    <input
-      v-if="isMobile()"
-      ref="file"
-      @change="fileChanged"
-      type="file"
-      accept="image/*"
-      value="Detect"
-      capture="camera"
-    />
-  </div>
+  <v-container grid-list-xl text-xs-center>
+    <v-layout row wrap>
+      <v-flex xs8>
+        <video
+          class="mirrored xs8"
+          v-if="!isMobile()"
+          v-show="!displayresult"
+          @click="capture"
+          ref="video"
+        ></video>
+        <DisplayCard v-if="displayresult" :prediction="prediction" />
+        <input
+          v-if="isMobile()"
+          ref="file"
+          @change="fileChanged"
+          type="file"
+          accept="image/*"
+          value="Detect"
+          capture="camera"
+        />
+      </v-flex>
+      <v-flex xs3>
+        <v-switch v-model="continuous" label="Continous"></v-switch>
+        <v-switch v-model="showresult" label="Display Results"></v-switch>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-@Component
+import DisplayCard from "./DisplayCard.vue";
+import { IPredictionContent } from "../models/prediction";
+@Component({
+  components: {
+    DisplayCard
+  }
+})
 export default class Detect extends Vue {
+  private prediction: IPredictionContent | {} = {};
   private msg!: string;
   private video!: HTMLVideoElement;
   private processing!: boolean;
   private content!: Blob;
   private overlay: boolean = true;
+  private displayresult: boolean = false;
+  private continuous: boolean = false;
+  private showresult: boolean = true;
 
   public fileChanged() {
+    var content = document.createElement("span");
+    content.textContent = "File Selected";
     var element = this.$refs.file as HTMLInputElement;
     if (element.files) {
       var ele = element.files.item(0);
@@ -53,11 +80,16 @@ export default class Detect extends Vue {
         )
       )
         check = true;
-    })(navigator.userAgent || navigator.vendor || window.opera);
+    })(navigator.userAgent || navigator.vendor);
     return check;
   }
 
   public mounted() {
+    setInterval(() => {
+      if (this.continuous && !this.displayresult) {
+        this.capture();
+      }
+    }, 5000);
     this.video = this.$refs.video as HTMLVideoElement;
     this.video.autoplay = true;
     const constraints = {
@@ -69,7 +101,6 @@ export default class Detect extends Vue {
       this.video = this.$refs.video as HTMLVideoElement;
       this.video.srcObject = stream;
     });
-    setInterval(() => {}, 3000);
   }
   public capture() {
     let canvas = document.createElement("canvas");
@@ -112,6 +143,17 @@ export default class Detect extends Vue {
           predictionString: request.response,
           prediction: JSON.parse(request.response)
         });
+        if (this.showresult) {
+          this.displayresult = true;
+          this.prediction = {
+            image: dataUrl,
+            predictionString: request.response,
+            prediction: JSON.parse(request.response)
+          };
+          setTimeout(() => {
+            this.displayresult = false;
+          }, 5000);
+        }
       }
     };
     request.send(blob);

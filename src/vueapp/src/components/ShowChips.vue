@@ -35,7 +35,11 @@ export default class ShowChips extends Vue {
         return "🐶";
         break;
       case "Chick":
+      case "Duck":
         return "🐥";
+        break;
+      case "Bit":
+        return "🦝";
         break;
       default:
         return "❓";
@@ -55,6 +59,10 @@ export default class ShowChips extends Vue {
         return "white";
         break;
       case "Chick":
+      case "Duck":
+        return "black";
+        break;
+      case "Bit":
         return "black";
         break;
       default:
@@ -69,12 +77,14 @@ export default class ShowChips extends Vue {
         break;
       case "Mouse":
       case "Rat":
+      case "Bit":
         return "dark-grey";
         break;
       case "Dog":
         return "brown";
         break;
       case "Chick":
+      case "Duck":
         return "yellow";
         break;
       default:
