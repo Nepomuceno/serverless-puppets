@@ -1,5 +1,6 @@
 <template>
   <v-container fluid grid-list-sm>
+    <!--
     <v-layout row wrap>
       <v-switch v-model="filteredPuppets" label="🐶" value="dog"></v-switch>
       <v-switch v-model="filteredPuppets" label="🐭" value="mouse"></v-switch>
@@ -7,6 +8,7 @@
       <v-switch v-model="filteredPuppets" label="🐧" value="penguin"></v-switch>
       <v-switch v-model="filteredPuppets" label="🦝" value="bit"></v-switch>
     </v-layout>
+    -->
     <v-layout row wrap>
       <v-flex xs3 v-for="prediction in predictions" v-bind:key="prediction.image">
         <DisplayCard :prediction="prediction" />

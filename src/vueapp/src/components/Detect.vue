@@ -20,6 +20,7 @@
           capture="camera"
         />
       </v-flex>
+      <div v-if="debug">{{debugMessage}}</div>
       <v-flex xs3>
         <v-switch v-model="continuous" label="Continous"></v-switch>
         <v-switch v-model="showresult" label="Display Results"></v-switch>
@@ -47,8 +48,10 @@ export default class Detect extends Vue {
   private displayresult: boolean = false;
   private continuous: boolean = false;
   private showresult: boolean = true;
-
+  private debugMessage = "init";
+  private debug = false;
   public fileChanged() {
+    this.debugMessage = "File Changed";
     var content = document.createElement("span");
     content.textContent = "File Selected";
     var element = this.$refs.file as HTMLInputElement;
@@ -70,6 +73,8 @@ export default class Detect extends Vue {
 
   public isMobile() {
     var check = false;
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("ismobile")) return true;
     (function(a) {
       if (
         /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
@@ -85,6 +90,8 @@ export default class Detect extends Vue {
   }
 
   public mounted() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("debug")) this.debug = true;
     setInterval(() => {
       if (this.continuous && !this.displayresult) {
         this.capture();
@@ -161,9 +168,10 @@ export default class Detect extends Vue {
   }
 
   public displayPrediction(image: string, prediction: string) {
+    this.debugMessage = "Display prediction";
     let canvas = document.createElement("canvas");
-    canvas.width = this.video.videoWidth | 640;
-    canvas.height = this.video.videoHeight | 480;
+    canvas.width = this.video ? this.video.videoWidth | 640 : 640;
+    canvas.height = this.video ? this.video.videoHeight | 480 : 480;
     let response = JSON.parse(prediction);
     if (response.predictions) {
       response.predictions.forEach((prediction: any) => {
