@@ -33,6 +33,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import DisplayCard from "./DisplayCard.vue";
 import { IPredictionContent } from "../models/prediction";
+
 @Component({
   components: {
     DisplayCard
@@ -50,6 +51,7 @@ export default class Detect extends Vue {
   private showresult: boolean = true;
   private debugMessage = "init";
   private debug = false;
+
   public fileChanged() {
     this.debugMessage = "File Changed";
     var content = document.createElement("span");
@@ -130,14 +132,14 @@ export default class Detect extends Vue {
 
   public async detect(blob: Blob | File, dataUrl: string) {
     let request = new XMLHttpRequest();
-    request.open("POST", process.env.VUE_APP_COGNITIVE_URL, true);
+    request.open("POST", (<any>process).env.VUE_APP_COGNITIVE_URL, true);
     request.setRequestHeader(
       "Content-Type",
       "application/multipart/form-data; charset=UTF-8"
     );
     request.setRequestHeader(
       "Prediction-Key",
-      process.env.VUE_APP_COGNITIVE_TOKEN
+      (<any>process).env.VUE_APP_COGNITIVE_TOKEN
     );
     let formData = new FormData();
     formData.append("file", blob, "puppet-capture.jpeg");
@@ -176,7 +178,7 @@ export default class Detect extends Vue {
     if (response.predictions) {
       response.predictions.forEach((prediction: any) => {
         if (
-          prediction.probability > process.env.VUE_APP_LIMIT_BOX &&
+          prediction.probability > (<any>process).env.VUE_APP_LIMIT_BOX &&
           prediction.boundingBox
         ) {
           let ctx = canvas.getContext("2d");
@@ -203,7 +205,7 @@ export default class Detect extends Vue {
           );
           console.info(prediction);
         }
-        if (prediction.probability > process.env.VUE_APP_LIMIT) {
+        if (prediction.probability > (<any>process).env.VUE_APP_LIMIT) {
         }
       });
     } else {

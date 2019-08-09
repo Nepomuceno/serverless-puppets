@@ -6,8 +6,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["post", "options"],
-      "route": "{userId}/negotiate"
+      "methods": ["post"],
+      "route": "{userId}/pushData"
     },
     {
       "type": "http",
@@ -20,7 +20,13 @@
       "userId": "{userId}",
       "name": "connectionInfo",
       "hubName": "images"
+    },
+    {
+      "type": "signalR",
+      "direction": "out",
+      "hubName": "images",
+      "name": "signalRMessage"
     }
   ],
-  "scriptFile": "../dist/negotiate/index.js"
+  "scriptFile": "../dist/pushData/index.js"
 }

@@ -1,14 +1,5 @@
 <template>
   <v-container fluid grid-list-sm>
-    <!--
-    <v-layout row wrap>
-      <v-switch v-model="filteredPuppets" label="🐶" value="dog"></v-switch>
-      <v-switch v-model="filteredPuppets" label="🐭" value="mouse"></v-switch>
-      <v-switch v-model="filteredPuppets" label="🐥" value="duck"></v-switch>
-      <v-switch v-model="filteredPuppets" label="🐧" value="penguin"></v-switch>
-      <v-switch v-model="filteredPuppets" label="🦝" value="bit"></v-switch>
-    </v-layout>
-    -->
     <v-layout row wrap>
       <v-flex xs3 v-for="prediction in predictions" v-bind:key="prediction.image">
         <DisplayCard :prediction="prediction" />
@@ -21,21 +12,43 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { IPredictionContent } from "../models/prediction";
 import DisplayCard from "./DisplayCard.vue";
+import * as signalR from "@aspnet/signalr";
 @Component({
   components: {
     DisplayCard
   }
 })
 export default class Display extends Vue {
+  private apiBaseUrl: string = "https://serverlesspuppets.azurewebsites.net";
   @Prop() private predictions!: IPredictionContent[];
+  @Prop() clientId!: string;
+
+  private connection: signalR.HubConnection = new signalR.HubConnectionBuilder()
+    .withUrl(`${this.apiBaseUrl}/api/${this.clientId}`)
+    .build();
+
   private filteredPuppets: string[] = [
-    "dog",
-    "duck",
-    "penguin",
-    "mouse",
-    "bit"
+    'Dog',
+    'Duck',
+    'Penguin',
+    'Mouse',
+    'Bit'
   ];
-  public mounted() {}
+  public async mounted() {
+    this.connection.on("pushData", x => this.pushPrediction(x));
+    await this.connection.start();
+  }
+
+  public pushPrediction(prediction: IPredictionContent) {
+    this.predictions.unshift(prediction);
+  }
+
+  async beforeDestroy() {
+    if (this.connection) {
+      await Promise.all([this.connection.stop()]);
+      console.log("connection stopped");
+    }
+  }
 }
 </script>
 

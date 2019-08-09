@@ -24,71 +24,71 @@ export default class ShowChips extends Vue {
   public mounted() {}
   public getIcon(tagName: string): string {
     switch (tagName) {
-      case "Penguin":
-        return "🐧";
+      case 'Penguin':
+        return '🐧';
         break;
-      case "Mouse":
-      case "Rat":
-        return "🐭";
+      case 'Mouse':
+      case 'Rat':
+        return '🐭';
         break;
-      case "Dog":
-        return "🐶";
+      case 'Dog':
+        return '🐶';
         break;
-      case "Chick":
-      case "Duck":
-        return "🐥";
+      case 'Chick':
+      case 'Duck':
+        return '🐥';
         break;
-      case "Bit":
-        return "🦝";
+      case 'Bit':
+        return '🦝';
         break;
       default:
-        return "❓";
+        return '❓';
         break;
     }
   }
   public getForegroundColorClass(tagName: string): string {
     switch (tagName) {
-      case "Penguin":
-        return "white";
+      case 'Penguin':
+        return 'white';
         break;
-      case "Mouse":
-      case "Rat":
-        return "black";
+      case 'Mouse':
+      case 'Rat':
+        return 'black';
         break;
-      case "Dog":
-        return "white";
+      case 'Dog':
+        return 'white';
         break;
-      case "Chick":
-      case "Duck":
-        return "black";
+      case 'Chick':
+      case 'Duck':
+        return 'black';
         break;
-      case "Bit":
-        return "black";
+      case 'Bit':
+        return 'black';
         break;
       default:
-        return "white";
+        return 'white';
         break;
     }
   }
   public getColorClass(tagName: string): string {
     switch (tagName) {
-      case "Penguin":
-        return "black";
+      case 'Penguin':
+        return 'black';
         break;
-      case "Mouse":
-      case "Rat":
-      case "Bit":
-        return "dark-grey";
+      case 'Mouse':
+      case 'Rat':
+      case 'Bit':
+        return 'dark-grey';
         break;
-      case "Dog":
-        return "brown";
+      case 'Dog':
+        return 'brown';
         break;
-      case "Chick":
-      case "Duck":
-        return "yellow";
+      case 'Chick':
+      case 'Duck':
+        return 'yellow';
         break;
       default:
-        return "❓";
+        return '❓';
         break;
     }
   }

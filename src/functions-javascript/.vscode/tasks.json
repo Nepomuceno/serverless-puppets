@@ -6,7 +6,26 @@
       "command": "host start",
       "problemMatcher": "$func-watch",
       "isBackground": true,
-      "dependsOn": "func: extensions install"
+      "dependsOn": "npm build"
+    },
+    {
+      "type": "shell",
+      "label": "npm build",
+      "command": "npm run build",
+      "dependsOn": "npm install",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "type": "shell",
+      "label": "npm install",
+      "command": "npm install"
+    },
+    {
+      "type": "shell",
+      "label": "npm prune",
+      "command": "npm prune --production",
+      "dependsOn": "npm build",
+      "problemMatcher": []
     }
   ]
 }
