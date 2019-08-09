@@ -102,6 +102,7 @@ export default class Detect extends Vue {
       this.video.srcObject = stream;
     });
   }
+
   public capture() {
     let canvas = document.createElement("canvas");
     canvas.width = this.video.videoWidth | 640;
