@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureSignalRConnectionString": "Endpoint=https://puppets-signalr.service.signalr.net;AccessKey=yazbsv7QVAhL2+i5UE+t1LioW012XPQvGVSQpxv5Ofw=;Version=1.0;"
+  },
+  "Host": {
+    "CORS": "http://localhost:8080",
+    "CORSCredentials": true
+  }
+}

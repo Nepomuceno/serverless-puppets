@@ -133,16 +133,14 @@ export default class Detect extends Vue {
   public async detect(blob: Blob | File, dataUrl: string) {
     let request = new XMLHttpRequest();
     request.open("POST", (<any>process).env.VUE_APP_COGNITIVE_URL, true);
-    request.setRequestHeader(
-      "Content-Type",
-      "application/multipart/form-data; charset=UTF-8"
-    );
+    request.setRequestHeader("Content-Type", "application/octet-stream");
     request.setRequestHeader(
       "Prediction-Key",
       (<any>process).env.VUE_APP_COGNITIVE_TOKEN
     );
-    let formData = new FormData();
-    formData.append("file", blob, "puppet-capture.jpeg");
+    // request.send(blob);
+    // let formData = new FormData();
+    // formData.append("file", blob, "puppet-capture.jpeg");
     request.onreadystatechange = () => {
       if (request.readyState == XMLHttpRequest.DONE) {
         let response = JSON.parse(request.response);
